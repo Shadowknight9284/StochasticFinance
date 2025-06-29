@@ -23,10 +23,12 @@ int main() {
     Eigen::VectorXd price_vector = Eigen::Map<Eigen::VectorXd>(prices.data(), prices.size());
     strategy.calibrate(price_vector);
     
-    std::cout << "Strategy calibrated with parameters:" << std::endl;
-    std::cout << "Mean reversion speed: " << strategy.get_params()(0) << std::endl;
-    std::cout << "Long-term mean: " << strategy.get_params()(1) << std::endl;
-    std::cout << "Variance: " << strategy.get_params()(2) << std::endl;
+    std::cout << "Jump Diffusion Strategy calibrated with parameters:" << std::endl;
+    std::cout << "Lambda (jump intensity): " << strategy.get_lambda() << std::endl;
+    std::cout << "Mu_j (mean jump size): " << strategy.get_mu_j() << std::endl;
+    std::cout << "Sigma_j (jump volatility): " << strategy.get_sigma_j() << std::endl;
+    std::cout << "Mu (drift): " << strategy.get_mu() << std::endl;
+    std::cout << "Sigma (volatility): " << strategy.get_sigma() << std::endl;
     
     // Test signal generation
     int buy_signals = 0, sell_signals = 0, hold_signals = 0;
@@ -49,10 +51,11 @@ int main() {
         }
     }
     
-    std::cout << "\nSignal distribution:" << std::endl;
+    std::cout << "\nJump Diffusion Signal distribution:" << std::endl;
     std::cout << "Buy signals: " << buy_signals << std::endl;
     std::cout << "Sell signals: " << sell_signals << std::endl;
     std::cout << "Hold signals: " << hold_signals << std::endl;
+    std::cout << "Total jumps detected: " << strategy.get_jump_count() << std::endl;
     
     std::cout << "\nPerformance metrics:" << std::endl;
     std::cout << "Average latency: " << strategy.average_latency_us() << " μs" << std::endl;

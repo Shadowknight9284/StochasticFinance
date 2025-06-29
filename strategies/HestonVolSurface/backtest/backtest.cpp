@@ -5,6 +5,9 @@
 #include <map>
 #include <chrono>
 #include <algorithm>
+#include <iostream>
+#include <numeric>
+#include <random>
 
 // Backtest framework for NASDAQ ITCH data
 class BacktestEngine {

@@ -1,5 +1,5 @@
 \documentclass[12pt]{article}
-\input{../style.tex}
+\input{../../style.tex}
 
 \title{HestonVolSurface Strategy: Mathematical Framework and Implementation}
 \author{Quantitative Research Team}
@@ -10,15 +10,16 @@
 \maketitle
 
 \begin{abstract}
-This paper presents a comprehensive mathematical framework for the HestonVolSurface algorithmic trading strategy. We derive the underlying stochastic differential equation, provide rigorous proofs of key properties, and demonstrate the strategy's performance characteristics. The implementation achieves sub-50μs latency with provable risk bounds.
+This paper presents a comprehensive mathematical framework for the HestonVolSurface algorithmic trading strategy. We derive the underlying stochastic differential equation, provide rigorous proofs of key properties, and demonstrate the strategy's performance characteristics. The implementation achieves sub-50$\mu$s latency with provable risk bounds.
 \end{abstract}
 
 \section{Introduction}
 
 The HestonVolSurface strategy operates on the following stochastic framework:
-\begin{equation}
-dS_t = rS_t dt + \sqrt{V_t}S_t dW_t^S\\dV_t = \kappa(\theta - V_t)dt + \sigma\sqrt{V_t}dW_t^V
-\end{equation}
+\begin{align}
+dS_t &= rS_t dt + \sqrt{V_t}S_t dW_t^S \\
+dV_t &= \kappa(\theta - V_t)dt + \sigma\sqrt{V_t}dW_t^V
+\end{align}
 
 This strategy targets SPX Options Chain with the following performance guarantees:
 \begin{itemize}
@@ -31,10 +32,11 @@ This strategy targets SPX Options Chain with the following performance guarantee
 
 \begin{definition}[Strategy Process]
 Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a filtered probability space with filtration $\{\mathcal{F}_t\}_{t \geq 0}$. The asset price process $S_t$ follows:
-\begin{equation}
-dS_t = rS_t dt + \sqrt{V_t}S_t dW_t^S\\dV_t = \kappa(\theta - V_t)dt + \sigma\sqrt{V_t}dW_t^V
-\end{equation}
-where $W_t$ is a standard Brownian motion adapted to $\mathcal{F}_t$.
+\begin{align}
+dS_t &= rS_t dt + \sqrt{V_t}S_t dW_t^S \\
+dV_t &= \kappa(\theta - V_t)dt + \sigma\sqrt{V_t}dW_t^V
+\end{align}
+where $W_t^S$ and $W_t^V$ are correlated Brownian motions with $\langle dW_t^S, dW_t^V \rangle = \rho dt$.
 \end{definition}
 
 \begin{theorem}[Existence and Uniqueness]

@@ -525,6 +525,11 @@ perf.data.old
 !strategies/*/paper.pdf
 !strategies/*/presentation.pdf
 
+# Build scripts - keep these
+!build_papers.sh
+!build_papers.ps1
+!build_papers.bat
+
 # Important configuration templates
 !config_template.ini
 !settings_template.json

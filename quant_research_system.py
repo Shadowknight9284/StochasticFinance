@@ -99,7 +99,7 @@ class QuantResearchSystem:
         """Generate LaTeX paper with mathematical proofs."""
         
         latex_content = f"""\\documentclass[12pt]{{article}}
-\\input{{../style.tex}}
+\\input{{../../style.tex}}
 
 \\title{{{strategy_name} Strategy: Mathematical Framework and Implementation}}
 \\author{{Quantitative Research Team}}

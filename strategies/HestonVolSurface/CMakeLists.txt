@@ -8,19 +8,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -march=native -mtune=native -flto")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -fsanitize=address -fsanitize=undefined")
 
-# Find required packages
-find_package(Eigen3 REQUIRED)
+# Set Eigen include directory
+set(EIGEN3_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../external/eigen-3.4.0")
 
 # Include directories
 include_directories(${EIGEN3_INCLUDE_DIR})
 
 # Main strategy executable
 add_executable(hestonvolsurface_strategy model.cpp)
-target_link_libraries(hestonvolsurface_strategy Eigen3::Eigen)
 
 # Backtest executable
 add_executable(hestonvolsurface_backtest backtest/backtest.cpp)
-target_link_libraries(hestonvolsurface_backtest Eigen3::Eigen)
 
 # Compiler-specific optimizations
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")

@@ -23,10 +23,12 @@ int main() {
     Eigen::VectorXd price_vector = Eigen::Map<Eigen::VectorXd>(prices.data(), prices.size());
     strategy.calibrate(price_vector);
     
-    std::cout << "Strategy calibrated with parameters:" << std::endl;
-    std::cout << "Mean reversion speed: " << strategy.get_params()(0) << std::endl;
-    std::cout << "Long-term mean: " << strategy.get_params()(1) << std::endl;
-    std::cout << "Variance: " << strategy.get_params()(2) << std::endl;
+    std::cout << "Heston Strategy calibrated with parameters:" << std::endl;
+    std::cout << "Kappa (mean reversion speed): " << strategy.get_kappa() << std::endl;
+    std::cout << "Theta (long-term volatility): " << strategy.get_theta() << std::endl;
+    std::cout << "Sigma_v (vol of vol): " << strategy.get_sigma_v() << std::endl;
+    std::cout << "Rho (correlation): " << strategy.get_rho() << std::endl;
+    std::cout << "Current volatility: " << strategy.get_current_volatility() << std::endl;
     
     // Test signal generation
     int buy_signals = 0, sell_signals = 0, hold_signals = 0;
@@ -49,7 +51,7 @@ int main() {
         }
     }
     
-    std::cout << "\nSignal distribution:" << std::endl;
+    std::cout << "\nHeston Model Signal distribution:" << std::endl;
     std::cout << "Buy signals: " << buy_signals << std::endl;
     std::cout << "Sell signals: " << sell_signals << std::endl;
     std::cout << "Hold signals: " << hold_signals << std::endl;
