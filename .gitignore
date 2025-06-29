@@ -1,0 +1,539 @@
+# Quantitative Finance Repository .gitignore
+# ============================================
+
+# Python
+# -------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# C++
+# ----
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# CMake
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+# Build directories
+build/
+Build/
+BUILD/
+out/
+debug/
+release/
+Debug/
+Release/
+
+# IDE and Editor files
+# --------------------
+# Visual Studio Code
+.vscode/
+*.code-workspace
+.history/
+
+# Visual Studio
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+.vs/
+
+# JetBrains IDEs (CLion, PyCharm, etc.)
+.idea/
+*.iws
+*.iml
+*.ipr
+cmake-build-*/
+
+# QtCreator
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+*.moc.cpp
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qmlc
+*.jsc
+Makefile*
+*build-*
+*.qm
+
+# CodeBlocks
+*.depend
+*.layout
+*.cbp
+
+# Dev-C++
+*.dev
+
+# Eclipse CDT
+.autotools
+.cproject
+.metadata
+.project
+.settings/
+
+# Vim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# LaTeX
+# ------
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+*.loa
+*.nav
+*.snm
+*.vrb
+*.xdy
+*.figlist
+*.makefile
+*.fls
+*.dvi
+*.ps
+
+# LaTeX Beamer
+*.nav
+*.pre
+*.snm
+*.vrb
+
+# BibTeX
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+
+# Financial Data
+# --------------
+# Market data files
+*.csv
+*.parquet
+*.h5
+*.hdf5
+*.pickle
+*.pkl
+*.json
+*.xml
+*.xlsx
+*.xls
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+stocks.db
+market_data.db
+
+# Backtest results
+backtest_results/
+performance_data/
+trades.csv
+pnl.csv
+positions.csv
+risk_metrics.csv
+
+# Configuration files with sensitive data
+config.ini
+settings.json
+api_keys.txt
+credentials.json
+.secrets
+
+# Temporary files
+# ---------------
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+*~
+
+# OS generated files
+# ------------------
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Package managers
+# ----------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Conan
+conanfile.txt.bak
+conaninfo.txt
+conanbuildinfo.*
+graph_info.json
+
+# vcpkg
+vcpkg_installed/
+
+# Strategy-specific ignores
+# -------------------------
+# Generated strategy executables
+*_strategy
+*_backtest
+ornsteinuhlenbeck_strategy
+hestonvolsurface_strategy
+jumpdiffusion_strategy
+lognormaljumpmeanreversion_strategy
+
+# Performance profiling
+*.prof
+*.perf
+callgrind.out.*
+massif.out.*
+cachegrind.out.*
+
+# Memory leak detection
+valgrind.log
+*.memcheck
+
+# Code coverage
+*.gcov
+*.gcda
+*.gcno
+coverage/
+lcov.info
+
+# Documentation build
+docs/html/
+docs/latex/
+docs/xml/
+doxygen_warnings.txt
+
+# Jupyter notebooks with output
+# (keep .ipynb files but ignore checkpoints)
+*-checkpoint.ipynb
+
+# Research notebooks with large outputs
+research_notebooks/**/output/
+research_notebooks/**/*.png
+research_notebooks/**/*.jpg
+research_notebooks/**/*.pdf
+
+# Large files that shouldn't be in git
+# ------------------------------------
+# Model files
+*.model
+*.weights
+*.h5
+*.pb
+*.onnx
+
+# Large datasets
+large_data/
+historical_data/
+tick_data/
+level2_data/
+
+# Archive files
+*.zip
+*.tar
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.rar
+*.7z
+
+# Logs and debugging
+# ------------------
+logs/
+*.log
+debug.txt
+trace.txt
+error.log
+access.log
+
+# Performance monitoring
+perf.data
+perf.data.old
+
+# Keep these important files
+# --------------------------
+# Force include certain files that might be ignored by general patterns
+!README.md
+!LICENSE
+!.gitkeep
+!requirements.txt
+!CMakeLists.txt
+!Makefile
+!*.tex
+!style.tex
+!paper.tex
+!*.hpp
+!*.cpp
+!*.py
+!demo.py
+!quant_research_system.py
+
+# Strategy paper PDFs (compiled LaTeX) - keep these for portfolio
+!strategies/*/paper.pdf
+!strategies/*/presentation.pdf
+
+# Important configuration templates
+!config_template.ini
+!settings_template.json
+!docker-compose.yml
+!Dockerfile
+
+# Documentation
+!docs/*.md
+!docs/*.rst
+!API.md
+!USAGE.md
+!CONTRIBUTING.md
