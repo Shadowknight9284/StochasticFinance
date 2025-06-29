@@ -2,3 +2,15 @@ flask
 yfinance
 numpy
 pandas
+matplotlib
+scipy
+scikit-learn
+eigen
+cmake
+jupyter
+seaborn
+plotly
+dash
+backtrader
+zipline-reloaded
+QuantLib-Python

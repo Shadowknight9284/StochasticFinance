@@ -1,0 +1,25 @@
+Metadata-Version: 2.4
+Name: python-package-info
+Version: 0.0.15
+Summary: Get Python package info
+Author-email: Nico Schlömer <nico.schloemer@gmail.com>
+License-Expression: LicenseRef-Proprietary
+Keywords: dependencies
+Classifier: Development Status :: 4 - Beta
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: distro
+Requires-Dist: packaging>=22
+Requires-Dist: requests>=2.25
+Requires-Dist: rich-argparse
+Requires-Dist: x22>=0.2.1
+
+# Python Package Info
