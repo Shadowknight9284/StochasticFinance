@@ -39,6 +39,24 @@ class CointegrationConfig:
     pvalue_threshold: float = 0.05
     lookback_window: int = 252
     test_method: str = "engle_granger"  # "engle_granger" or "johansen"
+    significance_level: float = 0.05  # Statistical significance level
+    min_half_life: float = 1.0  # Minimum half-life in days
+    max_half_life: float = 60.0  # Maximum half-life in days
+    use_johansen: bool = True  # Use Johansen test in addition to Engle-Granger
+    hedge_ratio_method: str = "ols"  # "ols" or "tls" (total least squares)
+
+@dataclass 
+class PairSelectionConfig:
+    """Pair selection and ranking configuration."""
+    max_pairs: int = 50  # Maximum pairs to consider
+    min_score: float = 60.0  # Minimum trading score
+    sector_neutral: bool = False  # Whether to enforce sector neutrality
+    market_cap_filter: bool = True  # Filter by market cap similarity
+    max_market_cap_ratio: float = 5.0  # Max ratio between market caps
+    min_liquidity: int = 1_000_000  # Minimum average daily volume
+    rebalance_frequency: str = "monthly"  # How often to reselect pairs
+    correlation_decay: float = 0.95  # Decay factor for rolling correlation
+    max_spread_volatility: float = 0.5  # Maximum spread volatility
 
 @dataclass
 class TradingConfig:
@@ -75,6 +93,7 @@ class Config:
     data: DataConfig = None
     ou_model: OUModelConfig = None
     cointegration: CointegrationConfig = None
+    pair_selection: PairSelectionConfig = None
     trading: TradingConfig = None
     risk: RiskConfig = None
     backtest: BacktestConfig = None
@@ -87,6 +106,8 @@ class Config:
             self.ou_model = OUModelConfig()
         if self.cointegration is None:
             self.cointegration = CointegrationConfig()
+        if self.pair_selection is None:
+            self.pair_selection = PairSelectionConfig()
         if self.trading is None:
             self.trading = TradingConfig()
         if self.risk is None:
@@ -109,6 +130,7 @@ class Config:
             'data': self.data.__dict__,
             'ou_model': self.ou_model.__dict__,
             'cointegration': self.cointegration.__dict__,
+            'pair_selection': self.pair_selection.__dict__,
             'trading': self.trading.__dict__,
             'risk': self.risk.__dict__,
             'backtest': self.backtest.__dict__,
