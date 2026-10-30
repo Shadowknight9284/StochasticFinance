@@ -1,214 +1,66 @@
-# Pairs Trading Algorithm with Ornstein-Uhlenbeck Model
+# StochasticFinance
 
-A com## Development Timeline
+Statistical-arbitrage research code in Python: a cached daily-price data layer and cointegration tests
+for finding mean-reverting stock pairs, the groundwork for an Ornstein–Uhlenbeck pairs-trading strategy.
 
-- ✅ **Day 1**: Project setup and configuration
-- ✅ **Day 2**: Enhanced data infrastructure  
-- ✅ **Day 3**: Cointegration and pair selection + **Streamlit Dashboard Foundation**
-- 📅 **Day 4-5**: Ornstein-Uhlenbeck model + **Interactive OU Model Validation**
-- 📅 **Day 6**: Signal generation + **Real-time Signal Dashboard**
-- 📅 **Day 7**: Trading strategy + **Strategy Performance Dashboard**
-- 📅 **Day 8**: Risk management + **Risk Management Dashboard**
-- 📅 **Day 9-11**: Backtesting engine + **Interactive Backtest Dashboard**
-- 📅 **Day 12**: Optimization + **Parameter Optimization Interface**
-- 📅 **Day 13-14**: Integration and testing + **Complete Dashboard Integration**
-- 📅 **Day 15**: Production readiness + **Live Trading Dashboard**gorithmic trading system for pairs trading using the Ornstein-Uhlenbeck mean-reverting process model with **interactive Streamlit dashboard** for real-time model visualization and validation.
+**Status:** the data layer and the statistics work and have tests. The pair-search pipeline, the OU model,
+signals and backtesting are still in progress (see [Roadmap](#roadmap)).
 
-## Project Structure
+## What works today
+- **Price data with a local cache.** Downloads daily OHLCV and adjusted close from Yahoo Finance
+  (`yfinance`) into SQLite, so repeat runs read from disk. It can align two tickers by date and compute
+  returns, log returns and rolling volatility, and it checks data quality (by default at least 252
+  observations). The code is in `src/data/`.
+- **Cointegration tests.** `src/models/cointegration.py` has three parts:
+  - The **Engle–Granger** two-step test: an OLS hedge ratio, then an ADF test on the spread.
+  - The **Johansen** test for multivariate cointegration.
+  - The **half-life of mean reversion**, estimated from the spread's AR(1) coefficient.
+  - `PairValidator` also screens pairs by correlation band (0.5–0.95) before testing.
+- **Configuration.** Typed dataclasses in `src/utils/config.py` cover data, cointegration, pair selection,
+  the OU model, trading thresholds (z-score entry 2.0, exit 0.5, stop 3.5), risk limits and backtests.
+- **Dashboard.** A Streamlit app (`dashboard/app.py`) with an overview page and a pair-selection page. The
+  model-validation, live-trading, backtesting and risk pages are placeholders.
 
-```
-AlgorithmicTradingScanner/
-├── dashboard/                     # Streamlit Web Interface
-│   ├── __init__.py
-│   ├── app.py                    # Main Streamlit app
-│   ├── pages/                    # Dashboard pages
-│   │   ├── pair_selection.py     # Pair selection interface
-│   │   ├── model_validation.py   # OU model validation
-│   │   ├── live_trading.py       # Live trading monitor
-│   │   └── backtesting.py        # Backtest results
-│   └── components/               # Reusable components
-│       ├── charts.py             # Interactive charts
-│       ├── metrics.py            # Performance metrics
-│       └── controls.py           # User controls
-├── src/                          # Source code
-│   ├── data/                      # Data management
-│   │   ├── __init__.py
-│   │   └── stock_data.py          # Enhanced Stock class (Day 2)
-│   ├── models/                    # Mathematical models
-│   │   ├── __init__.py
-│   │   ├── ornstein_uhlenbeck.py  # OU model (Day 4-5)
-│   │   └── cointegration.py       # Cointegration tests (Day 3)
-│   ├── strategy/                  # Trading strategy
-│   │   ├── __init__.py
-│   │   ├── pairs_finder.py        # Pair identification (Day 3)
-│   │   ├── pairs_trader.py        # Trading logic (Day 7)
-│   │   └── signals.py             # Signal generation (Day 6)
-│   ├── risk/                      # Risk management
-│   │   ├── __init__.py
-│   │   └── portfolio_manager.py   # Risk controls (Day 8)
-│   ├── backtesting/              # Backtesting engine
-│   │   ├── __init__.py
-│   │   ├── backtester.py         # Main engine (Day 9-11)
-│   │   ├── performance.py        # Metrics (Day 9-11)
-│   │   └── visualization.py      # Charts (Day 9-11)
-│   └── utils/                    # Utilities
-│       ├── __init__.py
-│       ├── config.py             # Configuration ✓
-│       └── helpers.py            # Helper functions ✓
-├── tests/                        # Unit tests
-│   └── test_setup.py            # Setup tests ✓
-├── data/                         # Raw data storage
-├── results/                      # Backtest results
-├── notebooks/                    # Jupyter notebooks
-├── Stock.py                      # Original Stock class ✓
-├── requirements.txt              # Dependencies ✓
-├── main.py                       # Main execution ✓
-└── README.md                     # This file ✓
-```
-
-## Dependencies
-
-- **Core**: pandas, numpy, yfinance
-- **Statistics**: scipy, statsmodels
-- **Visualization**: matplotlib, seaborn
-- **Machine Learning**: scikit-learn
-- **Time Series**: arch
-
-## Development Timeline
-
-- ✅ **Day 1**: Project setup and configuration
-- ✅ **Day 2**: Enhanced data infrastructure  
-- � **Day 3**: Cointegration and pair selection
-- 📅 **Day 4-5**: Ornstein-Uhlenbeck model
-- 📅 **Day 6**: Signal generation
-- 📅 **Day 7**: Trading strategy
-- 📅 **Day 8**: Risk management
-- 📅 **Day 9-11**: Backtesting engine
-- 📅 **Day 12**: Optimization
-- 📅 **Day 13-14**: Integration and testing
-- 📅 **Day 15**: Production readiness
-
-## Usage
-
+## Quick start
 ```bash
-# Run the Streamlit dashboard
-streamlit run dashboard/app.py
-
-# Run the main algorithm
-python main.py
-
-# With custom parameters
-python main.py --start_date 2020-01-01 --end_date 2024-12-31 --verbose
-
-# Run tests
-python -m pytest tests/
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python -m pytest tests           # 7 tests
+streamlit run dashboard/app.py   # dashboard at http://localhost:8501
 ```
 
-## Streamlit Dashboard Features
+Test one pair for cointegration:
+```python
+from src.data.stock_data import MultiStockManager
+from src.models.cointegration import CointegrationTester
 
-### **🎯 Interactive Web Interface:**
-- **Real-time pair selection** with filtering and ranking
-- **Live model validation** with parameter adjustment
-- **Interactive charts** with zoom, pan, and data export
-- **Dynamic backtesting** with parameter optimization
-- **Risk monitoring** with real-time alerts
-- **Performance analytics** with drill-down capabilities
+m = MultiStockManager("stocks.db")
+m.download_data_batch(["KO", "PEP"], "2021-01-01", "2024-12-31")
+a, b = m.get_aligned_data("KO", "PEP")            # date-aligned price tables
+r = CointegrationTester().engle_granger_test(a["adj_close"], b["adj_close"])
+print(r.p_value, r.hedge_ratio, r.half_life, r.is_cointegrated)
+```
+A run on 2026-10-30 gave p = 0.647, hedge ratio 0.365, half-life ≈ 150 days and not cointegrated: KO and
+PEP move together, but their spread did not mean-revert over 2021–2024. That kind of result is exactly what
+the test is there to catch.
 
-### **📊 Dashboard Pages:**
-1. **Pair Selection** - Interactive correlation analysis and pair filtering
-2. **Model Validation** - OU model diagnostics and goodness-of-fit tests  
-3. **Live Trading** - Real-time signals and position monitoring
-4. **Backtesting** - Historical performance analysis and optimization
-5. **Risk Dashboard** - Portfolio risk metrics and alerts
+`python main.py --universe AAPL MSFT` is a setup check. It initializes the database and registers the tickers.
 
-## Visual Model Validation Features
+## Project layout
+```
+Stock.py                     base Stock class: yfinance download + SQLite storage
+src/data/                    MultiStockManager (batch download, alignment, stats), DatabaseManager
+src/models/cointegration.py  Engle–Granger, Johansen, half-life, PairValidator
+src/strategy/pairs_finder.py universe-wide pair search (correlation filter, then parallel cointegration tests)
+src/utils/                   config dataclasses, logging and helpers
+dashboard/                   Streamlit app and chart components
+tests/                       unit tests
+```
 
-### **Core Visualization Components:**
-1. **Pair Selection Visualization** (Day 3)
-   - Correlation heatmaps and scatter plots
-   - Cointegration test results dashboard
-   - Price spread evolution charts
-   - Statistical significance validation plots
+## Roadmap
+- [ ] Fix `PairsFinder`, which reads correlation settings from the wrong config section and fails on startup.
+- [ ] Ornstein–Uhlenbeck fit of the spread (θ, μ, σ) and z-score signals.
+- [ ] Backtester with transaction costs and the risk limits already in the config.
+- [ ] Fill in the dashboard's validation, backtest and risk pages.
 
-2. **Ornstein-Uhlenbeck Model Visualization** (Day 4-5)
-   - OU parameter estimation convergence plots
-   - Mean reversion visualization with confidence bands
-   - Half-life analysis and validation
-   - Model goodness-of-fit diagnostics
-
-3. **Signal Generation Visualization** (Day 6)
-   - Real-time spread z-score plots
-   - Entry/exit signal markers
-   - Threshold sensitivity analysis
-   - Signal quality metrics dashboard
-
-4. **Strategy Performance Visualization** (Day 7)
-   - Live trading signals overlay
-   - Position sizing visualization
-   - Strategy performance attribution
-   - Risk-adjusted returns analysis
-
-5. **Interactive Performance Dashboard** (Day 9-11)
-   - Real-time equity curve with drawdowns
-   - Rolling performance metrics
-   - Trade-level analysis with drill-down
-   - Market regime detection plots
-   - Parameter sensitivity heatmaps
-
-### **Model Validation Suite:**
-- **Statistical Tests Visualization**: ADF, Johansen, Granger causality
-- **Residual Analysis**: QQ plots, autocorrelation, heteroscedasticity
-- **Out-of-Sample Performance**: Walk-forward analysis charts
-- **Risk Metrics Dashboard**: VaR, Expected Shortfall, Maximum Drawdown
-- **Model Stability Analysis**: Parameter drift detection over time
-
-## Configuration
-
-The algorithm is highly configurable through `src/utils/config.py`. Key parameters:
-
-- **Data**: Market filters, date ranges
-- **OU Model**: Estimation methods, thresholds
-- **Trading**: Entry/exit signals, position sizing
-- **Risk**: Position limits, drawdown controls
-- **Backtesting**: Transaction costs, benchmark
-
-## Phase 3 Status: ✅ COMPLETE
-
-### Completed:
-- **Cointegration Testing Module**: Engle-Granger and Johansen tests with statistical validation
-- **Pair Validation System**: Comprehensive scoring and ranking algorithm for trading pairs
-- **Pairs Finder**: Automated pair discovery with parallel processing and sector analysis
-- **Enhanced Configuration**: Added cointegration and pair selection parameters
-- **Streamlit Dashboard Foundation**: Complete interactive web interface with navigation
-- **Dashboard Components**: Interactive charts, controls, and metrics for pairs analysis
-- **Advanced Visualizations**: Correlation heatmaps, spread analysis, and statistical plots
-
-### Key Features:
-- Statistical significance testing (ADF, Johansen)
-- Half-life calculation for mean reversion
-- Trading score algorithm (0-100 scale)
-- Multi-threaded pair validation
-- Interactive web dashboard with real-time analysis
-- Export capabilities and configuration management
-
-### Ready for Day 4:
-- Ornstein-Uhlenbeck model implementation
-- Parameter estimation and validation
-- Interactive model visualization and diagnostics
-
-## Phase 2 Status: ✅ COMPLETE
-
-### Completed:
-- Enhanced Stock class with pairs trading capabilities
-- Multi-stock data manager for batch operations
-- Database schema with indexes and optimization
-- Data validation and quality checks
-- Correlation matrix calculations
-- Aligned data retrieval for pairs
-- Configuration updates for data module
-- Unit tests for all components
-
-### Ready for Day 3:
-- Cointegration testing implementation
-- Pair selection algorithms
-- Statistical significance validation
+Research code: nothing here places orders or is investment advice.
