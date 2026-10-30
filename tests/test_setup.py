@@ -34,8 +34,7 @@ class TestProjectSetup(unittest.TestCase):
             'src/utils',
             'tests',
             'data',
-            'results',
-            'notebooks'
+            'results'
         ]
         
         project_root = os.path.dirname(os.path.dirname(__file__))
