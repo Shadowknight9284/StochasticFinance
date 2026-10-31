@@ -12,23 +12,23 @@ import time
 
 from src.models.cointegration import PairValidator
 from src.data.stock_data import MultiStockManager  
-from src.utils.config import TradingConfig
+from src.utils.config import Config
 
 
 class PairsFinder:
     """Find and rank potential trading pairs."""
     
-    def __init__(self, config: TradingConfig):
+    def __init__(self, config: Config):
         """
         Initialize pairs finder.
         
         Args:
-            config: Trading configuration
+            config: Full configuration; the correlation band comes from config.cointegration
         """
         self.config = config
         self.validator = PairValidator(
-            min_correlation=config.data.min_correlation,
-            max_correlation=config.data.max_correlation,
+            min_correlation=config.cointegration.min_correlation,
+            max_correlation=config.cointegration.max_correlation,
             min_data_points=100
         )
         self.stock_manager = MultiStockManager()
@@ -54,6 +54,9 @@ class PairsFinder:
         # Step 1: Download data for all tickers
         self.logger.info("Downloading stock data...")
         stock_data = {}
+        missing = [t for t in tickers if not self.stock_manager.has_data(t, start_date, end_date)]
+        if missing:
+            self.stock_manager.download_data_batch(missing, start_date, end_date)
         
         for ticker in tickers:
             try:
@@ -133,6 +136,8 @@ class PairsFinder:
                                 pairs: List[Tuple[str, str]]) -> List[Dict]:
         """Validate pairs using parallel processing."""
         validated_pairs = []
+        if not pairs:
+            return validated_pairs
         
         # Use thread pool for parallel processing
         max_workers = min(4, len(pairs))  # Limit workers to avoid overwhelming
