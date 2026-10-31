@@ -26,7 +26,7 @@ class EnhancedStockData(Stock):
     def __init__(self, ticker: str, db_path: str = "stocks.db"):
         """Initialize enhanced stock data manager."""
         self.db_path = db_path
-        super().__init__(ticker)
+        super().__init__(ticker, db_path)
         self._setup_enhanced_tables()
         
     def _setup_enhanced_tables(self):
@@ -146,10 +146,11 @@ class MultiStockManager:
                     try:
                         stock = self.add_stock(ticker)
                         
-                        if len(chunk) == 1:
-                            ticker_data = data
+                        # group_by='ticker' gives (ticker, field) columns, for a single ticker too in recent yfinance
+                        if isinstance(data.columns, pd.MultiIndex):
+                            ticker_data = data[ticker] if ticker in data.columns.get_level_values(0) else pd.DataFrame()
                         else:
-                            ticker_data = data[ticker] if ticker in data.columns.levels[0] else pd.DataFrame()
+                            ticker_data = data
                         
                         if not ticker_data.empty:
                             # Process and store data
@@ -189,6 +190,30 @@ class MultiStockManager:
                     results[ticker] = False
         
         return results
+    
+    def get_stock_data(self, ticker: str, start_date: str = None,
+                       end_date: str = None) -> Optional[pd.DataFrame]:
+        """Cached daily prices for one ticker between two dates, indexed by date. None if nothing is cached."""
+        stock = self.add_stock(ticker)
+        try:
+            stock.get_data_from_db()
+        except Exception:
+            return None
+        data = stock.data
+        if start_date:
+            data = data[data['date'] >= start_date]
+        if end_date:
+            data = data[data['date'] <= end_date]
+        return data.set_index('date') if not data.empty else None
+    
+    def has_data(self, ticker: str, start_date: str, end_date: str, slack_days: int = 7) -> bool:
+        """Whether the cache covers start_date..end_date (to within slack_days, for weekends and holidays)."""
+        data = self.get_stock_data(ticker)
+        if data is None:
+            return False
+        start = (pd.Timestamp(start_date) + pd.Timedelta(days=slack_days)).strftime('%Y-%m-%d')
+        end = (min(pd.Timestamp(end_date), pd.Timestamp.today()) - pd.Timedelta(days=slack_days)).strftime('%Y-%m-%d')
+        return data.index.min() <= start and data.index.max() >= end
     
     def get_aligned_data(self, ticker1: str, ticker2: str, 
                         start_date: str = None, end_date: str = None) -> Tuple[pd.DataFrame, pd.DataFrame]:

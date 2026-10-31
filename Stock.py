@@ -6,10 +6,10 @@ import sqlite3
 import os
 
 class Stock:
-    def __init__(self, ticker):
+    def __init__(self, ticker, db_path='stocks.db'):
         self.ticker = ticker
         self.data = pd.DataFrame()
-        self.conn = sqlite3.connect('stocks.db')
+        self.conn = sqlite3.connect(db_path)
         self.cursor = self.conn.cursor()
         self.table_name = self.ticker.replace('.', '_')
         self.create_table()
